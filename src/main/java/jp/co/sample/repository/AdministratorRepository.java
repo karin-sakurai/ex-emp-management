@@ -33,11 +33,11 @@ public class AdministratorRepository {
 		SqlParameterSource param=new BeanPropertySqlParameterSource(administrator);
 		
 		if(administrator.getId()==null) {
-			String insertsql="INSERT INTO administrator(name,email_address,password)"
-					+ " VALUES (:name,:email_address,:password)";
+			String insertsql="INSERT INTO administrators(name,mail_address,password)"
+					+ " VALUES (:name,:mailAddress,:password)";
 			template.update(insertsql, param);
 		}else {
-			String updatesql="UPDATE administrator SET name=:name,mail_address=:mail_address"
+			String updatesql="UPDATE administrators SET name=:name,mail_address=:mailAddress"
 					+ " password=:password";
 			template.update(updatesql, param);
 		}	
