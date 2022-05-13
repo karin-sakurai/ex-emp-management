@@ -41,7 +41,7 @@ public class AdministratorController {
 		return new LoginForm();
 	}
 	
-	@RequestMapping("/tologin")
+	@RequestMapping("/")
 	public String toLogin() {
 		return "administrator/login";
 	}
