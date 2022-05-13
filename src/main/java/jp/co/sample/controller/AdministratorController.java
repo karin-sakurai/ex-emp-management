@@ -32,7 +32,7 @@ public class AdministratorController {
 		Administrator administrator=new Administrator();
 		BeanUtils.copyProperties(form, administrator);
 		Service.insert(administrator);
-		return "/";
+		return "redirect:/";
 	}
 	
 
