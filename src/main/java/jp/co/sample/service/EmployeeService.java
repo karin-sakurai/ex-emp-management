@@ -22,5 +22,10 @@ public class EmployeeService {
 
 	}
 
+	public Employee showDetail(Integer id) {
+		Employee employee = employeeRepository.load(id);
+		return employee;
+	}
+
 }
 
