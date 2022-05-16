@@ -33,7 +33,6 @@ public class EmployeeRepository {
 		return employee;
 		
 	};
-//			new BeanPropertyRowMapper<>(Employee.class);
 	
 	@Autowired
 	private NamedParameterJdbcTemplate template;
