@@ -65,6 +65,7 @@ public class Employee {
 		this.emailAddress = emailAddress;
 	}
 
+
 	public String getZipCode() {
 		return zipCode;
 	}
