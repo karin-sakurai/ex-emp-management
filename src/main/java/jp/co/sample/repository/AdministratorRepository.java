@@ -1,7 +1,5 @@
 package jp.co.sample.repository;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -14,51 +12,45 @@ import jp.co.sample.domain.Administrator;
 
 @Repository
 public class AdministratorRepository {
-	
-	private static final RowMapper<Administrator> ADMINISTRATOR_ROW_MAPPER=(rs,i)->{
-		Administrator administrator=new Administrator();
+
+	private static final RowMapper<Administrator> ADMINISTRATOR_ROW_MAPPER = (rs, i) -> {
+		Administrator administrator = new Administrator();
 		administrator.setId(rs.getInt("id"));
 		administrator.setName(rs.getString("name"));
-		administrator.setMailAddress(rs.getString("mail_adress"));
-		administrator.setPassword(rs.getNString("password"));
+		administrator.setMailAddress(rs.getString("mail_address"));
+		administrator.setPassword(rs.getString("password"));
 		return administrator;
 	};
-	
+
 	@Autowired
 	private NamedParameterJdbcTemplate template;
-	
-	
-	
+
 	public void insert(Administrator administrator) {
-		SqlParameterSource param=new BeanPropertySqlParameterSource(administrator);
-		
-		if(administrator.getId()==null) {
-			String insertsql="INSERT INTO administrator(name,email_address,password)"
-					+ " VALUES (:name,:email_address,:password)";
+		SqlParameterSource param = new BeanPropertySqlParameterSource(administrator);
+
+		if (administrator.getId() == null) {
+			String insertsql = "INSERT INTO administrators(name,mail_address,password)"
+					+ " VALUES (:name,:mailAddress,:password)";
 			template.update(insertsql, param);
-		}else {
-			String updatesql="UPDATE administrator SET name=:name,mail_address=:mail_address"
-					+ " password=:password";
+		} else {
+			String updatesql = "UPDATE administrators SET name=:name,mail_address=:mailAddress" + " password=:password";
 			template.update(updatesql, param);
-		}	
+		}
 	}
-	
-	
-	public Administrator findByMailAddressAndPassword(String mailAddress,String password) {
-		
-		String sql="SELECT * FROM administrators WHERE mail_adress=:mailAddress AND password=:password;";
-	
-		SqlParameterSource param=new MapSqlParameterSource().addValue("mailAddress",mailAddress).addValue("password",password);
-		
-		List<Administrator> administratorList=template.query(sql,param,ADMINISTRATOR_ROW_MAPPER);
-		
-		
-		if(administratorList.size()==0) {
+
+	public Administrator findByMailAddressAndPassword(String mailAddress, String password) {
+
+		String sql = "SELECT * FROM administrators WHERE mail_address=:mailAddress AND password=:password;";
+
+		SqlParameterSource param = new MapSqlParameterSource().addValue("mailAddress", mailAddress).addValue("password",
+				password);
+
+		try {
+			Administrator administrator = template.queryForObject(sql, param, ADMINISTRATOR_ROW_MAPPER);
+			return administrator;
+		} catch (Exception e) {
 			return null;
 		}
-		
-		return administratorList.get(0);
 	}
 
 }
-
