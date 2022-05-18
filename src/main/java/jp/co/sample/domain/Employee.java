@@ -65,12 +65,12 @@ public class Employee {
 		this.emailAddress = emailAddress;
 	}
 
-	public String getzipCode() {
+	public String getZipCode() {
 		return zipCode;
 	}
 
-	public void setZipcode(String zipcode) {
-		zipCode = zipcode;
+	public void setZipCode(String zipCode) {
+		this.zipCode = zipCode;
 	}
 
 	public String getAddress() {
