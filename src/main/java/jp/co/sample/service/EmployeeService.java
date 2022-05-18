@@ -27,5 +27,9 @@ public class EmployeeService {
 		return employee;
 	}
 
+	public void update(Employee employee) {
+		employeeRepository.update(employee);
+	}
+
 }
 
