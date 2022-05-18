@@ -6,6 +6,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -29,22 +31,35 @@ public class AdministratorController {
 		return new InsertAdministratorForm();
 	}
 
+	@ModelAttribute
+	public LoginForm setUpLoginForm() {
+		return new LoginForm();
+	}
+
 	@RequestMapping("/toInsert")
 	public String toInsert() {
 		return "administrator/insert";
 	}
 
 	@RequestMapping("/insert")
-	public String insert(InsertAdministratorForm form) {
+	public String insert(@Validated InsertAdministratorForm form, BindingResult result, Model model) {
+
+		if (result.hasErrors()) {
+			return toInsert();
+		}
+
+		Administrator administrator1 = Service.findmail(form.getMailAddress());
+
+		if (administrator1 != null) {
+			String mailerror = "メールアドレスが重複しています";
+			model.addAttribute("mailerror", mailerror);
+			return "administrator/insert";
+		} else {
 		Administrator administrator = new Administrator();
 		BeanUtils.copyProperties(form, administrator);
 		Service.insert(administrator);
 		return "redirect:/";
 	}
-
-	@ModelAttribute
-	public LoginForm setUpLoginForm() {
-		return new LoginForm();
 	}
 
 	@RequestMapping("/")
@@ -53,7 +68,12 @@ public class AdministratorController {
 	}
 
 	@RequestMapping("/login")
-	public String login(LoginForm form, Model model) {
+	public String login(@Validated LoginForm form, BindingResult result, Model model) {
+
+		if (result.hasErrors()) {
+			return toLogin();
+		}
+
 		Administrator administrator = Service.login(form.getMailAddress(), form.getPassword());
 
 		if (administrator == null) {
@@ -64,6 +84,7 @@ public class AdministratorController {
 			session.setAttribute("administratorName", administrator.getName());
 			return "forward:/employee/showList";
 		}
+
 	}
 
 	@RequestMapping("/logout")

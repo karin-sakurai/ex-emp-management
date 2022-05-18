@@ -1,5 +1,7 @@
 package jp.co.sample.form;
 
+import javax.validation.constraints.NotBlank;
+
 public class UpdateEmployeeForm {
 	
 	public String getId() {
@@ -16,6 +18,8 @@ public class UpdateEmployeeForm {
 	}
 
 	private String id;
+
+	@NotBlank(message = "入力してください")
 	private String dependentsCount;
 	
 	@Override

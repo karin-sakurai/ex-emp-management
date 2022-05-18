@@ -23,5 +23,9 @@ public class AdministratorService {
 		return administrator;
 	}
 	
+	public Administrator findmail(String mailAddress) {
+		Administrator administrator = repository.findByMailAddress(mailAddress);
+		return administrator;
+	}
 
 }

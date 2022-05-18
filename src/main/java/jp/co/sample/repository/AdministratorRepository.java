@@ -53,4 +53,16 @@ public class AdministratorRepository {
 		}
 	}
 
+	public Administrator findByMailAddress(String mailAddress) {
+		String sql = "SELECT * FROM administrators WHERE mail_address=:mailAddress;";
+		SqlParameterSource param = new MapSqlParameterSource().addValue("mailAddress", mailAddress);
+		try {
+			Administrator administrator = template.queryForObject(sql, param, ADMINISTRATOR_ROW_MAPPER);
+			return administrator;
+		} catch (Exception e) {
+			return null;
+		}
+
+	}
+
 }
